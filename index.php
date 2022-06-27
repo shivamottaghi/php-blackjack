@@ -4,25 +4,41 @@ declare(strict_types=1);
 require 'mySrc/Suit.php';
 require 'mySrc/Card.php';
 require 'mySrc/Deck.php';
-require 'mySrc/Blackjack.php';
 require 'mySrc/Player.php';
+require 'mySrc/Dealer.php';
+require 'mySrc/Blackjack.php';
 
 session_start();
 if (!isset($_SESSION['blackJack'])){
-    $blackJack = new Blackjack();
-    $_SESSION['blackJack'] = $blackJack;
+    $_SESSION['blackJack'] = new Blackjack();
+    checkPlayer();
 }
 if (isset($_POST['surrender'])){
     $_SESSION['blackJack']->getPlayer()->surrender();
 }
 if (isset($_POST['hit'])){
-    $_SESSION['blackJack']->getPlayer()->hit($_SESSION['blackJack']->getDeck());
+    if (!$_SESSION['playerLost']){
+        $_SESSION['blackJack']->getPlayer()->hit($_SESSION['blackJack']->getDeck());
+    }else{
+        $_SESSION['hitWarning'] = 'You\'ve already lost...!';
+    }
+}
+if (isset($_POST['stand'])){
+    $_SESSION['blackJack']->getDealer()->hit();
+}
+function checkPlayer() : void{
+    $_SESSION['blackJack']->getPlayer()->getScore();
+    if ($_SESSION['blackJack']->getPlayer()->hasLost()){
+        $_SESSION['playerLost'] = true;
+    }else{
+        $_SESSION['playerLost'] = false;
+    }
 }
 //var_dump($_SESSION['blackJack']);
 //var_dump($blackJack);
 //$myGame = new Blackjack();
-var_dump( $_SESSION['blackJack']->getPlayer()->getScore());
-var_dump( $_SESSION['blackJack']->getPlayer()->getCards());
+//var_dump( $_SESSION['blackJack']->getPlayer()->getScore());
+//var_dump( $_SESSION['blackJack']->getPlayer()->getCards());
 
 ?>
 
