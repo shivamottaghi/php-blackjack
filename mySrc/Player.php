@@ -2,7 +2,7 @@
 
 class Player
 {
-    private $cards = [];
+    private array $cards = [];
     private bool $lost = false;
     const MAGICAL_VAL = 21;
 
@@ -16,7 +16,7 @@ class Player
     }
 
     public function hit(Deck $deck){
-        $this->cards = $deck->drawCard();
+       array_push($this->cards, $deck->drawCard());
         if ($this->getScore()>self::MAGICAL_VAL){
             $this->lost = true;
         }
