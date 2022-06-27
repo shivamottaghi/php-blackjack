@@ -10,8 +10,8 @@ class Player
      */
     public function __construct(Deck $deck)
     {
-        $this->cards = $deck->getCards();
-        $deck->drawCard();
+        $this->cards = $deck->drawCard();
+        $this->cards = $deck->drawCard();
     }
 
     public function hit(){
