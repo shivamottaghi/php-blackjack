@@ -11,8 +11,8 @@ class Player
      */
     public function __construct(Deck $deck)
     {
-        $this->cards = $deck->drawCard();
-        $this->cards = $deck->drawCard();
+        array_push($this->cards,$deck->drawCard());
+        array_push($this->cards,$deck->drawCard());
     }
 
     public function hit(Deck $deck){
@@ -37,4 +37,14 @@ class Player
     public function hasLost(): bool{
         return $this->lost;
     }
+
+    /**
+     * @return Card|null
+     */
+    public function getCards(): array
+    {
+        return $this->cards;
+    }
+
+
 }
