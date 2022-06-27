@@ -52,7 +52,7 @@
     - Make it expect the `Deck` object as a parameter.
     - Pass this `Deck` from the `Blackjack` constructor.
     - Now draw 2 cards for the player. You have to use an existing method for this from the Deck class.
-- [ ] Go back to the `Player` class and add the following logic in your empty methods:
+- [x] Go back to the `Player` class and add the following logic in your empty methods:
   - `getScore` loops over all the cards and return the total value of that player.
   - `hasLost` will return the bool of the lost property.
   - `hit` should add a card to the player. If this brings him above 21, set `lost` property to `true`. To count his score use the method `getScore` you wrote earlier. This method should expect the `$deck` variable as an argument from outside, to draw the card.
@@ -61,3 +61,22 @@
     This sets the property `lost` in the `player` instance to true.
   - `stand` does not have a method in the player class but will instead call hit on the `dealer` instance. (you have to do nothing here)
 
+#### Creating the index.php  file
+- [x] Create an index.php file with the following code:
+  - Require all the files with the classes you already created. Ideally you want a seperate file for each class.
+  - Start the PHP session
+  - If the session does not have a `Blackjack` variable yet:
+    - Create a new `Blackjack` object.
+    - Put the `Blackjack` object in the session
+- [x] Use buttons or links to send to the `index.php` page what the player's action is. (i.e. hit/stand/surrender)
+
+#### The dealer
+- [x] we are going [extend](https://www.php.net/manual/en/language.oop5.inheritance.php) the `player` class and extend it to a newly created `dealer` class.
+
+- [x] Change the `Blackjack` class to create a new `dealer` object instead of a `player` object for the property of the dealer.
+
+- [x] Now create a `hit` function that keeps drawing cards until the dealer has at least 15 points. The tricky part is that we also need the `lost` check we already had in the `hit` function of the player. We could just copy the code but duplicated code is never the solution, instead you can use the following code to call the old `hit` function:
+
+```parent::hit();```
+
+    
