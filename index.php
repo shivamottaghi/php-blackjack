@@ -11,7 +11,7 @@ require 'mySrc/Blackjack.php';
 session_start();
 if (!isset($_SESSION['blackJack'])) {
     $_SESSION['blackJack'] = new Blackjack();
-    assignSessionVar();
+    assignSessionVal();
     checkPlayer();
 }
 if (isset($_POST['surrender'])) {
@@ -39,7 +39,7 @@ if (isset($_POST['reset'])) {
     checkPlayer();
 
 }
-function assignSessionVar(): void
+function assignSessionVal(): void
 {
     $_SESSION['playerLost'] = false;
     $_SESSION['dealerLost'] = false;
@@ -50,7 +50,6 @@ function assignSessionVar(): void
 
 function checkPlayer(): void
 {
-    //$_SESSION['blackJack']->getPlayer()->getScore();
     if ($_SESSION['blackJack']->getPlayer()->hasLost()) {
         $_SESSION['playerLost'] = true;
     }
@@ -73,9 +72,6 @@ function whoIsTheWinner(): void
 //var_dump($_SESSION['blackJack']->getDealer()->getScore());
 //var_dump($_SESSION['blackJack']->getDealer()->getCards());
 //var_dump($blackJack);
-//$myGame = new Blackjack();
-//var_dump( $_SESSION['blackJack']->getPlayer()->getScore());
-//var_dump( $_SESSION['blackJack']->getPlayer()->getCards());
 
 ?>
 
