@@ -18,7 +18,7 @@ if (isset($_POST['surrender'])) {
     $_SESSION['blackJack']->getPlayer()->surrender();
     $_SESSION['playerLost'] = $_SESSION['blackJack']->getPlayer()->hasLost();
 }
-if (isset($_POST['hit'])) {
+if (isset($_POST['hit'])&& $_POST['randcheck']==$_SESSION['rand']) {
     if (!$_SESSION['playerLost']) {
         $_SESSION['blackJack']->getPlayer()->hit($_SESSION['blackJack']->getDeck());
         $_SESSION['playerLost'] = $_SESSION['blackJack']->getPlayer()->hasLost();
@@ -162,8 +162,15 @@ function whoIsTheWinner(): void
         </div>
     </div>
     <div class="row align-items-center">
-        <div class="col-12 col-md-4 offset-md-4">
-            <form action="index.php" method="post">
+        <div class="col-12 text-center">
+            <form action="<?php $_SERVER['PHP_SELF']?>" method="post">
+                <!--HIDDEN INPUT-->
+                <?php
+                $rand=rand();
+                $_SESSION['rand']=$rand;
+                ?>
+                <input type="hidden" value="<?php echo $rand; ?>" name="randcheck" />
+                <!--END OF HIDDEN INPUT-->
                 <button type="submit" name="hit" class="btn btn-lg btn-success"
                     <?php
                     if ($_SESSION['playerLost']||$_SESSION['dealerLost']) echo 'disabled';
