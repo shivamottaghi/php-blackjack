@@ -177,7 +177,7 @@ function whoIsTheWinner(): void
                     if ($_SESSION['playerLost']||$_SESSION['dealerLost']) echo 'disabled';
                     ?>>Surrender
                 </button>
-                <!--<button type="reset" name="reset" class="btn btn-lg btn-info">Restart</button>-->
+                <button type="submit" name="reset" class="btn btn-lg btn-info">Restart</button>
             </form>
         </div>
     </div>
