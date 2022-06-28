@@ -18,6 +18,14 @@
 - Once the player is done the dealer keeps taking cards until he has at least 15 points. If he hits above 21 he automatically loses.
 - At the end display the winner
 
+[comment]: <> (### My Code Explanation
+- This project includes 6 classes:
+  1. `Blackjack` , which creates my whole game object
+  2. `Deck`
+  3. `Card`
+  4. `Suit`
+  5. `Player`
+  6. `Dealer` which is a child of Player class)
 <hr>
 
 #### I have to do:
@@ -78,5 +86,23 @@
 - [x] Now create a `hit` function that keeps drawing cards until the dealer has at least 15 points. The tricky part is that we also need the `lost` check we already had in the `hit` function of the player. We could just copy the code but duplicated code is never the solution, instead you can use the following code to call the old `hit` function:
 
 ```parent::hit();```
+
+#### Final push
+
+- [x] When you the **hit** button call `hit` on player, then check the lost status of the player.
+   You will need to pass a `Deck` variable to this function, you can use the `Blackjack::getDeck()` method for this.
+- [x] When you the **stand** button call `hit` on dealer, then check the lost status of the dealer. If he is not lost, compare scores to set the winner (If equal the dealer wins).
+- [x] **Surrender**: the dealer auto wins.
+- [x] Always display on the page the scores of both players. If you have a winner, display it.
+- [x] End of the game: destroy the current `blackjack` variable so the game restarts.
+#### Would like to add features
+- [x] Dealer's cards only shown when `stand` button is pressed 
+- [ ] Add chips to the game so the player can bet
+#### My errors:
+- [x] Player score calculation is wrong
+- [x] double `hit` when page refreshed
+  - Solved thanks to my coach who shared this link with me:
+  - [StackOverFlow, How to prevent form resubmission when page is refreshed](https://stackoverflow.com/questions/6320113/how-to-prevent-form-resubmission-when-page-is-refreshed-f5-ctrlr)
+
 
     
