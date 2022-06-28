@@ -18,14 +18,6 @@
 - Once the player is done the dealer keeps taking cards until he has at least 15 points. If he hits above 21 he automatically loses.
 - At the end display the winner
 
-[comment]: <> (### My Code Explanation
-- This project includes 6 classes:
-  1. `Blackjack` , which creates my whole game object
-  2. `Deck`
-  3. `Card`
-  4. `Suit`
-  5. `Player`
-  6. `Dealer` which is a child of Player class)
 <hr>
 
 #### I have to do:
