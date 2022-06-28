@@ -22,8 +22,6 @@ if (isset($_POST['hit'])) {
     if (!$_SESSION['playerLost']) {
         $_SESSION['blackJack']->getPlayer()->hit($_SESSION['blackJack']->getDeck());
         $_SESSION['playerLost'] = $_SESSION['blackJack']->getPlayer()->hasLost();
-    } else {
-        $_SESSION['hitWarning'] = 'You\'ve already lost...!';
     }
 }
 if (isset($_POST['stand'])) {
@@ -68,8 +66,12 @@ function whoIsTheWinner(): void
         $_SESSION['playerLost'] = true;
     }
 }
-
-//var_dump($_SESSION['blackJack']);
+//echo 'player';
+//var_dump($_SESSION['blackJack']->getPlayer()->getScore());
+//var_dump($_SESSION['blackJack']->getPlayer()->getCards());
+//echo 'dealer';
+//var_dump($_SESSION['blackJack']->getDealer()->getScore());
+//var_dump($_SESSION['blackJack']->getDealer()->getCards());
 //var_dump($blackJack);
 //$myGame = new Blackjack();
 //var_dump( $_SESSION['blackJack']->getPlayer()->getScore());
@@ -90,8 +92,8 @@ function whoIsTheWinner(): void
 <body>
 <div class="container">
     <div class="row align-items-center">
-        <div class="col-6 col-md-3 text-center">
-            <p style="font-size:2rem">
+        <div class="col-6 col-md-4 text-center">
+            <p style="font-size:5rem">
                 <?php
                 if ($_SESSION['showDealerCards']) {
                     foreach ($_SESSION['blackJack']->getDealer()->getCards() as $card) {
@@ -107,7 +109,7 @@ function whoIsTheWinner(): void
                 ?>
             </p>
         </div>
-        <div class="col-6 col-md-3 text-center">
+        <div class="col-6 col-md-2 text-center">
             <h5>Dealer score</h5>
             <p>
                 <?php
@@ -119,8 +121,8 @@ function whoIsTheWinner(): void
                 ?>
             </p>
         </div>
-        <div class="col-6 col-md-3 text-center">
-            <p style="font-size:2rem">
+        <div class="col-6 col-md-4 text-center order-md-last">
+            <p style="font-size:5rem">
             <?php
             foreach ($_SESSION['blackJack']->getPlayer()->getCards() as $card) {
                 echo $card->getUnicodeCharacter(true);
@@ -129,7 +131,7 @@ function whoIsTheWinner(): void
             ?>
             </p>
         </div>
-        <div class="col-6 col-md-3 text-center">
+        <div class="col-6 col-md-2 text-center">
             <h5>Your score:</h5>
             <p>
                 <?php
