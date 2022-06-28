@@ -2,9 +2,10 @@
 
 class Player
 {
-    private array $cards = [];
-    private bool $lost = false;
+    protected array $cards = [];
+    protected bool $lost = false;
     const MAGICAL_VAL = 21;
+    protected int $score = 0;
 
     /**
      * @param Deck $deck
@@ -27,14 +28,17 @@ class Player
     }
 
     public function getScore(): int{
-        $totalValue = 0;
-        foreach ($this->cards as $card){
-            $totalValue += $card->getValue();
+        $this->score = 0;
+        foreach ($this->cards as $key => $card){
+            $this->score += $card->getValue();
         }
-        return $totalValue;
+        return $this->score;
     }
 
     public function hasLost(): bool{
+        if ($this->getScore()>self::MAGICAL_VAL){
+            $this->lost = true;
+        }
         return $this->lost;
     }
 
