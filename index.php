@@ -11,7 +11,7 @@ require 'mySrc/Blackjack.php';
 session_start();
 if (!isset($_SESSION['blackJack'])) {
     $_SESSION['blackJack'] = new Blackjack();
-    assignSessionVal();
+    assignSessionVar();
     checkPlayer();
 }
 if (isset($_POST['surrender'])) {
@@ -39,13 +39,20 @@ if (isset($_POST['reset'])) {
     checkPlayer();
 
 }
-function assignSessionVal(): void
+if (isset($_POST['bet'])){
+    $_SESSION['betMade']=true;
+    $_SESSION['betAmount']=$_POST['betAmount'];
+}
+function assignSessionVar(): void
 {
     $_SESSION['playerLost'] = false;
     $_SESSION['dealerLost'] = false;
     $_SESSION['playerScore'] = $_SESSION['blackJack']->getPlayer()->getScore();
     $_SESSION['dealerScore'] = 0;
     $_SESSION['showDealerCards'] = false;
+    $_SESSION['chips'] = 100;
+    $_SESSION['betMade']=false;
+    $_SESSION['betAmount'] = 5;
 }
 
 function checkPlayer(): void
@@ -157,9 +164,27 @@ function whoIsTheWinner(): void
             </p>
         </div>
     </div>
+    <div class="row align-items-center mb-3">
+        <div class="col-12 col-md-4 offset-md-4 text-center">
+            <form action="index.php" method="post" name="betForm">
+                <label for="betAmount" id="betLabel"><?php if ($_SESSION['betMade']){
+                    echo "You bet " .$_SESSION['betAmount'] ." chips";
+                    }else{echo 'Place your bet';}?></label>
+                <input id="betAmount" type="range" class="form-range" name="betAmount" min="5" max="<?php $_SESSION['chips'] ?>" width="20%"
+                       onchange="document.getElementById('betLabel').innerText=this.value">
+                <button class="btn btn-lg btn-dark" type="submit" name="bet"
+                    <?php
+                    if ($_SESSION['betMade']){
+                        echo 'disabled';
+                    }
+                    ?>
+                >bet</button>
+            </form>
+        </div>
+    </div>
     <div class="row align-items-center">
         <div class="col-12 text-center">
-            <form action="<?php $_SERVER['PHP_SELF']?>" method="post">
+            <form action="<?php $_SERVER['PHP_SELF']?>" method="post" name="blackJackForm">
                 <!--HIDDEN INPUT-->
                 <?php
                 $rand=rand();
@@ -169,17 +194,17 @@ function whoIsTheWinner(): void
                 <!--END OF HIDDEN INPUT-->
                 <button type="submit" name="hit" class="btn btn-lg btn-success"
                     <?php
-                    if ($_SESSION['playerLost']||$_SESSION['dealerLost']) echo 'disabled';
+                    if ($_SESSION['playerLost']||$_SESSION['dealerLost'] || !$_SESSION['betMade']) echo 'disabled';
                     ?>>Hit!
                 </button>
                 <button type="submit" name="stand" class="btn btn-lg btn-warning"
                     <?php
-                    if ($_SESSION['playerLost']||$_SESSION['dealerLost']) echo 'disabled';
+                    if ($_SESSION['playerLost']||$_SESSION['dealerLost'] ||!$_SESSION['betMade']) echo 'disabled';
                     ?>>Stand
                 </button>
                 <button type="submit" name="surrender" class="btn btn-lg btn-danger"
                     <?php
-                    if ($_SESSION['playerLost']||$_SESSION['dealerLost']) echo 'disabled';
+                    if ($_SESSION['playerLost']||$_SESSION['dealerLost'] ||!$_SESSION['betMade']) echo 'disabled';
                     ?>>Surrender
                 </button>
                 <button type="submit" name="reset" class="btn btn-lg btn-info">Restart</button>
