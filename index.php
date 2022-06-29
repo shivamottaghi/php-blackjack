@@ -11,29 +11,38 @@ require 'mySrc/Blackjack.php';
 session_start();
 if (!isset($_SESSION['blackJack'])) {
     $_SESSION['blackJack'] = new Blackjack();
+    $_SESSION['chips'] = 100;
     assignSessionVar();
     checkPlayer();
 }
 if (isset($_POST['surrender'])) {
     $_SESSION['blackJack']->getPlayer()->surrender();
     $_SESSION['playerLost'] = $_SESSION['blackJack']->getPlayer()->hasLost();
+    $_SESSION['chips']-= $_SESSION['betAmount'];
 }
 if (isset($_POST['hit'])&& $_POST['randcheck']==$_SESSION['rand']) {
     if (!$_SESSION['playerLost']) {
         $_SESSION['blackJack']->getPlayer()->hit($_SESSION['blackJack']->getDeck());
         $_SESSION['playerLost'] = $_SESSION['blackJack']->getPlayer()->hasLost();
+        if ($_SESSION['playerLost']){
+            $_SESSION['chips']-= $_SESSION['betAmount'];
+        }
     }
 }
 if (isset($_POST['stand'])) {
     $_SESSION['blackJack']->getDealer()->hit($_SESSION['blackJack']->getDeck());
     $_SESSION['dealerLost'] = $_SESSION['blackJack']->getDealer()->hasLost();
     $_SESSION['showDealerCards'] = true;
-    if (!$_SESSION['playerLost'] && !$_SESSION['dealerLost']) {
+    if ($_SESSION['playerLost']){
+        $_SESSION['chips']-=  $_SESSION['betAmount'];
+    }elseif($_SESSION['dealerLost']){
+        $_SESSION['chips']+= $_SESSION['betAmount'];
+    }elseif(!$_SESSION['playerLost'] && !$_SESSION['dealerLost']) {
         whoIsTheWinner();
     }
 }
 if (isset($_POST['reset'])) {
-    session_unset();
+    unset($_SESSION['blackJack']);
     $_SESSION['blackJack'] = new Blackjack();
     assignSessionVar();
     checkPlayer();
@@ -45,12 +54,11 @@ if (isset($_POST['bet'])){
 }
 function assignSessionVar(): void
 {
-    $_SESSION['playerLost'] = false;
-    $_SESSION['dealerLost'] = false;
+    $_SESSION['playerLost'] = $_SESSION['blackJack']->getPlayer()->hasLost();
+    $_SESSION['dealerLost'] = $_SESSION['blackJack']->getDealer()->hasLost();
     $_SESSION['playerScore'] = $_SESSION['blackJack']->getPlayer()->getScore();
     $_SESSION['dealerScore'] = 0;
     $_SESSION['showDealerCards'] = false;
-    $_SESSION['chips'] = 100;
     $_SESSION['betMade']=false;
     $_SESSION['betAmount'] = 5;
 }
@@ -68,8 +76,11 @@ function whoIsTheWinner(): void
     $_SESSION['dealerScore'] = $_SESSION['blackJack']->getDealer()->getScore();
     if ($_SESSION['playerScore'] > $_SESSION['dealerScore']) {
         $_SESSION['dealerLost'] = true;
+        $_SESSION['chips']+=  $_SESSION['betAmount'];
+
     } else {
         $_SESSION['playerLost'] = true;
+        $_SESSION['chips']-=  $_SESSION['betAmount'];
     }
 }
 //echo 'player';
@@ -166,6 +177,7 @@ function whoIsTheWinner(): void
     </div>
     <div class="row align-items-center mb-3">
         <div class="col-12 col-md-4 offset-md-4 text-center">
+            <p>you have <?php echo $_SESSION['chips'] ?> chips</p>
             <form action="index.php" method="post" name="betForm">
                 <label for="betAmount" id="betLabel"><?php if ($_SESSION['betMade']){
                     echo "You bet " .$_SESSION['betAmount'] ." chips";
