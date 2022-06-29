@@ -83,13 +83,6 @@ function whoIsTheWinner(): void
         $_SESSION['chips']-=  $_SESSION['betAmount'];
     }
 }
-//echo 'player';
-//var_dump($_SESSION['blackJack']->getPlayer()->getScore());
-//var_dump($_SESSION['blackJack']->getPlayer()->getCards());
-//echo 'dealer';
-//var_dump($_SESSION['blackJack']->getDealer()->getScore());
-//var_dump($_SESSION['blackJack']->getDealer()->getCards());
-//var_dump($blackJack);
 
 ?>
 
